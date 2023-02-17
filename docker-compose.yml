@@ -1,0 +1,50 @@
+version: '3.4'
+
+services:
+  bread_service:
+    image: bread_service:4.0
+    #links:
+      #- rabbitmq:rabbitmq
+    ports:
+      - "80:80"
+    depends_on:
+      "rabbitmq":
+        condition: service_healthy
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+    #links:
+      #- rabbitmq
+    networks:
+      - my-network   
+  rabbitmq:
+    image: rabbitmq:1.0
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+        - my-network
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "15672"]
+      interval: 30s
+      timeout: 30s
+      retries: 2
+      start_period: 30s
+    ##environment:
+      ##- RABBITMQ_DEFAULT_USER=test - read about it
+      ##- RABBITMQ_DEFAULT_PASSWORD=test
+    #command: apt-get update && apt-get install -y netcat
+    #look up to find a way to create the rabbitmq new user with admin priviledges and create a new queue
+
+networks:
+  my-network:
+    external: true
+
+
+
+
+
