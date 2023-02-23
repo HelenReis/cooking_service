@@ -17,42 +17,20 @@ namespace BreadService.Application.Bread
             _context = context; 
             _config = config;
         }
-
         public void ListenToMessage()
         {
             var factory = new ConnectionFactory();
             factory.HostName = _config.RabbitMqHost;
-
             var connection = factory.CreateConnection();
             var channel = connection.CreateModel();
             var consumer = new EventingBasicConsumer(channel);
 
             consumer.Received += async(model, ea) =>
             {                
-                var body = ea.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(" [x] Received {0}", message);
-
-                var type = ea.RoutingKey;
-                
-                 if (type == _config.ReadRoutingKey)
-                {
-                    var data = JObject.Parse(message);
-                    var cheese =_context.Cheese.First();
-                }
-
-                if (type == _config.InsertRoutingKey)
-                {
-                    var data = JObject.Parse(message);
-                    _context.Cheese.Add(new Cheese()
-                    {
-                        StartTime = data["startTime"].Value<DateTime>()
-                    });
-                    _context.SaveChanges();
-                }
+                Console.WriteLine("RECEBI A MSG BREAD");
             };
 
-            channel.BasicConsume(queue: _config.CheeseQueue,
+            channel.BasicConsume(queue: _config.BreadQueue,
                                      autoAck: true,
                                      consumer: consumer);
         }

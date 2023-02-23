@@ -11,9 +11,15 @@ namespace BreadService
             var builder = WebApplication.CreateBuilder(args);
             ConfigureServices(builder);
             var app = builder.Build();
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+            app.MapControllers();
             var serviceProvider = ConfigureScope(app);
             EnsureDatabaseIsCreated(serviceProvider);
-            //SubscribeToMessages(serviceProvider);
+            SubscribeToMessages(serviceProvider);
             return app;
         }
 
@@ -25,7 +31,9 @@ namespace BreadService
                 .GetValue<string>("Database")
                 )
             );
-
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<IBreadDataContext, BreadDataContext>();
             builder.Services.AddScoped<IAppSettings, AppSettings>();
             builder.Services.AddScoped<IBreadSubscriber, BreadSubscriber>();

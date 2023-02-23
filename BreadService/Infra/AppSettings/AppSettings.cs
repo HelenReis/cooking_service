@@ -8,24 +8,8 @@ namespace BreadService.Infra
         {
             _configVariables = config.GetSection("Messages");
             _config = config;
-            Console.WriteLine("CHAMOU APPSE");
-            Console.WriteLine(_configVariables.GetValue<string>("CheeseQueue"));
-            Console.WriteLine(_config.GetValue<string>("RABBITMQ_HOST"));
-            Console.WriteLine(_config.GetValue<string>("RABBITMQ_USER"));
-            Console.WriteLine(_config.GetValue<string>("RABBITMQ_PASSWORD"));
         }
-        public string CheeseQueue => _configVariables.GetValue<string>("CheeseQueue");
-
-        public string ReadRoutingKey => _configVariables.GetValue<string>("ReadRoutingKey");
-
-        public string InsertRoutingKey => _configVariables.GetValue<string>("InsertRoutingKey");
-
-        public string UpdateRoutingKey => _configVariables.GetValue<string>("UpdateRoutingKey");
-
+        public string BreadQueue => _configVariables.GetValue<string>("BreadQueue");
         public string RabbitMqHost => _config.GetValue<string>("RABBITMQ_HOST");
-
-        public string RabbitMqUser => _config.GetValue<string>("RABBITMQ_USER");
-
-        public string RabbitMqPassword => _config.GetValue<string>("RABBITMQ_PASSWORD");
     }
 }
