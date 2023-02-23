@@ -1,15 +1,20 @@
+using CookingService.Application;
+using CookingService.Infra;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<ISetup, Setup>();
+builder.Services.AddScoped<IPublishMessageService, PublishMessageService>();
+builder.Services.AddScoped<IAppSettings, AppSettings>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+var serviceProvider = ConfigureScope(app);
+SendMessages(serviceProvider);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,3 +28,21 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static void SendMessages(IServiceProvider serviceProvider) {
+    var appSettings = GetServiceScope<IAppSettings>(serviceProvider);
+    var setup = new Setup(appSettings);
+    setup.SetupAMQTP();
+}
+
+static T GetServiceScope<T>(IServiceProvider serviceProvider) {
+    return serviceProvider.GetRequiredService<T>();
+}
+
+static IServiceProvider ConfigureScope(WebApplication webHost) {
+    var serviceScopeFactory = (IServiceScopeFactory)webHost.Services.GetService(typeof(IServiceScopeFactory));
+    var scope = serviceScopeFactory.CreateScope();
+    var services = scope.ServiceProvider;
+
+    return services;
+}
