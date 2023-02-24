@@ -1,0 +1,1 @@
+import indexHtml from"./index.html";document.body.innerHTML="<h1>OI</h1>";
