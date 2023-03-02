@@ -12,9 +12,7 @@ services:
       - RABBITMQ_HOST=rabbitmq
     networks:
         - my-network
-    links:
-      - rabbitmq:rabbitmq
-      
+
   bread_service:
     image: bread_service:9.0
     ports:
@@ -26,8 +24,6 @@ services:
       - RABBITMQ_HOST=rabbitmq
     networks:
         - my-network
-    links:
-      - rabbitmq:rabbitmq
 
   rabbitmq:
     image: rabbitmq:3.0
