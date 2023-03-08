@@ -27,7 +27,7 @@ namespace BreadService.Application.Bread
 
             consumer.Received += async(model, ea) =>
             {                
-                Console.WriteLine("RECEBI A MSG BREAD");
+                Console.WriteLine("received message on bread service.");
             };
 
             channel.BasicConsume(queue: _config.BreadQueue,
