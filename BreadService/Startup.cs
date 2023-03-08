@@ -47,7 +47,8 @@ namespace BreadService
         public static void SubscribeToMessages(IServiceProvider serviceProvider) {
             var appSettings = GetServiceScope<IAppSettings>(serviceProvider);
             var dataContext = GetServiceScope<BreadDataContext>(serviceProvider);
-            Subscriber.SubscribeToMessages(appSettings, dataContext);
+            var subscriber = new BreadAppSubscriber(appSettings);
+            subscriber.SubscribeToMessages();
         }
 
         public static T GetServiceScope<T>(IServiceProvider serviceProvider) {

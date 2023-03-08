@@ -10,11 +10,9 @@ namespace BreadService.Application.Bread
 {
     public class BreadSubscriber : IBreadSubscriber
     {
-        private readonly IBreadDataContext _context;
         private readonly IAppSettings _config;
-        public BreadSubscriber(IBreadDataContext context, IAppSettings config)
+        public BreadSubscriber(IAppSettings config)
         {
-            _context = context; 
             _config = config;
         }
         public void ListenToMessage()
