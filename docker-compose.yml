@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   cooking_service:
-    image: cooking_service:9.0
+    image: cooking_service:9.2
     ports:
       - "70:80"
     depends_on:
@@ -14,9 +14,21 @@ services:
         - my-network
 
   bread_service:
-    image: bread_service:9.0
+    image: bread_service:9.1
     ports:
       - "80:80"
+    depends_on:
+      "cooking_service":
+        condition: service_started
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    networks:
+        - my-network
+
+  cheese_service:
+    image: cheese_service:9.1
+    ports:
+      - "50:80"
     depends_on:
       "cooking_service":
         condition: service_started
