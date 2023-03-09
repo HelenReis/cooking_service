@@ -2,7 +2,7 @@
 
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=IN%20DEVELOPMENT&color=GREEN&style=for-the-badge)
 
-Demonstration in a simple way in how to use the event driven architecture using the mediator topology.
+Demonstrating in a simple way how to use the event driven architecture using the mediator topology.
 
 ## :eyes: What's next
 - Implementing the steak service
